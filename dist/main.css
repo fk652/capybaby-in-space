@@ -357,3 +357,7 @@ body {
 #over9000 {
   display: none;
 }
+
+.big-text {
+  font-size: 60px !important;
+}

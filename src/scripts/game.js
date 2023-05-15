@@ -237,6 +237,10 @@ class Game {
       this.switchGameInformation();
       this.allMovingObjects.enemies.push(this.boss);
       this.bossFight = true;
+      setTimeout(() => {
+        const rules = document.getElementById("rules");
+        rules.innerHTML = "<li class='big-text'>Press T to go even further beyond</li>"
+      }, 30000)
     }
   }
 
