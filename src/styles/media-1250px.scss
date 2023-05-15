@@ -1,0 +1,121 @@
+@media screen and (max-width: 1250px) {
+  #main-container {
+    #header {
+      padding: 10px;
+      width: 680px;
+
+      .project-title {
+        font-size: 35px;
+      }
+
+      .dev-name {
+        font-size: 18px;
+      }
+
+      .nav-links {
+        a {
+          margin: 0 10px 0 10px;
+          i {
+            font-size: 25px;
+          }
+        }
+      }
+    }
+
+    aside {
+      flex-basis: 690px;
+      height: auto;
+      min-height: 75px;
+    }
+
+    #game-instructions {
+      height: auto;
+      justify-content: center;
+      align-items: center;
+
+      #sound-container {
+        margin: 30px 50px 30px 0;
+  
+        #sound-off {
+          display: none;
+        }
+      }
+
+      .test {
+        display: none;
+      }
+
+      .instructions-container {
+        margin-top: 10px;
+        margin-bottom: 10px;
+
+        .keys-container {
+          .keys-text-container {
+            .move-text {
+              padding-top: 10px;
+            }
+          }
+        }
+      }
+
+      ul {
+        margin-bottom: 20px;
+        li {
+          margin: 5px 0 5px 0;
+        }
+      }
+    }
+
+    canvas {
+      margin: 10px 0 10px 0;
+    }
+
+    #game-information {
+      flex-direction: column;
+      align-items: center;
+      height: 50px;
+      padding-top: 0;
+      font-size: 20px;
+
+      .score-container {
+        margin-right: 30px;
+        margin-top: 30px;
+
+        p {
+          margin-bottom: 10px;
+        }
+      }
+  
+      #player-health {
+        margin-right: 30px;
+        margin-bottom: 10px;
+        text-align: start;
+
+        #player-health-bar{
+          .player-health-point {
+            height: 15px;
+          }
+        }
+      }
+
+      #boss-info {
+        flex-direction: column;
+        align-items: flex-start;
+        margin-bottom: 10px;
+
+        #boss-health-bar{
+          flex-direction: row;
+          .boss-health-point {
+            height: 15px;
+            width: 20px;
+          }
+        }
+      }
+  
+      #wave-info {
+        display: flex;
+        align-items: center;
+      }
+    }
+  }
+}

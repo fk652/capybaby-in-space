@@ -1,0 +1,114 @@
+<html lang="en">
+
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+
+    <script src="./dist/main.js" defer></script>
+    
+    <link href='https://fonts.googleapis.com/css?family=Bangers|Oswald' rel='stylesheet'>
+    <link rel="stylesheet" href="./dist/main.css" />
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.7/css/all.css">
+    <title>Rails 2 Assessment</title>
+    <link rel="icon" type="image/png" href="./src/assets/boss1.png">
+  </head>
+
+  <body>
+    <div id="main-container">
+      <div id="header">
+        <h1 class="project-title">CAPYBABY IN SPACE</h1>
+        <h2 class="dev-name">By Fahim Khan</h2>
+
+        <div class="nav-links">
+          <a href="https://github.com/fk652/Galactic-Defender">
+            <i class="fab fa-github"></i>
+          </a>
+          <a href="https://www.linkedin.com/in/fk652/">
+            <i class="fab fa-linkedin"></i>
+          </a>
+        </div>
+      </div>
+
+      <div class="break"></div>
+
+      <aside id="game-information">
+        <div class="score-container">
+          <p>Score</p>
+          <span id="score"></span>
+        </div>
+
+        <div class="break"></div>
+
+        <div id="player-health">
+          <p>Capy Power</p>
+          <p id="over9000">9001</p>
+          <ul id="player-health-bar"></ul>
+        </div>
+
+        <div id="wave-info">
+          <div class="wave-text">
+            <p>Wave:</p>
+            <p>Remaining:</p>
+          </div>
+
+          <div class="break"></div>
+
+          <div class="wave-numbers">
+            <span id="wave-number"></span>
+            <span id="enemies-remaining"></span>
+          </div>
+        </div>
+
+        <div id="boss-info">
+          <p>HTTP Kitty 400- Bad Request</p>
+          <p id="boss-meme-health-bar">9000</p>
+          <ul id="boss-health-bar"></ul>
+        </div>
+      </aside>
+
+      <canvas id="game-view"></canvas>
+
+      <aside id="game-instructions">
+        <div id="sound-container">
+          <div id="sound-on">
+            <i class="fa fa-volume-up"></i>
+          </div>
+          <div id="sound-off">
+            <i class="fa fa-volume-off"></i>
+          </div>
+        </div>
+
+        <div class="break test"></div>
+
+        <div class="instructions-container">
+          <div class="keys-container">
+            <div class="arrow-icons">
+              <i class="far fa-caret-square-up"></i>
+              <div class="break"></div>
+              <i class="far fa-caret-square-left"></i>
+              <i class="far fa-caret-square-down"></i>
+              <i class="far fa-caret-square-right"></i>
+            </div>
+            <p class="spacebar">spacebar</p>
+          </div>
+
+          <div class="keys-text-container">
+            <p class="move-text">to move</p>
+            <p class="shoot-text">to shoot</p>
+          </div>
+        </div>
+
+        <div class="break"></div>
+
+        <ul id="rules">
+          <li>Survive against waves of enemies and defeat the boss at the end to win.</li>
+          <li>Avoid enemy projectiles and colliding with enemies.</li>
+          <li>Lose 1 health point whenever you take damage.</li>
+          <li>Game over if your health reaches 0.</li>
+          <li>Boss can only be damaged by hitting it's weakpoint in the middle.</li>
+        </ul>
+      </aside>
+    </div>
+  </body>
+</html>

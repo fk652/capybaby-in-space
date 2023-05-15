@@ -1,0 +1,16 @@
+@import "./styles/css-reset.scss";
+@import "./styles/main-container.scss";
+@import "./styles/media-1250px.scss";
+
+.break {
+  flex-basis: 100%;
+}
+
+body {
+  background-image: url(../src/assets/body_background.png);
+  background-repeat: repeat;
+}
+
+#over9000 {
+  display: none;
+}

@@ -1,0 +1,215 @@
+import Ship from "./ship";
+import Explosion2 from "./explosion2";
+import Projectile from "./projectile";
+
+class PlayerShip extends Ship {
+  static SPEED = 15;
+  static UP_KEYS = ["ArrowUp", 'w']
+  static DOWN_KEYS = ["ArrowDown", 's']
+  static RIGHT_KEYS = ["ArrowRight", 'd']
+  static LEFT_KEYS = ["ArrowLeft", 'a']
+  static IGNORE_TARGETS = ["sound-on", "sound-off", "sound-container"]
+  static MAX_HEALTH = 9001;
+
+  constructor(game) {
+    let image = document.createElement("img");
+    image.src = "src/assets/player1.png";
+    let height = 150;
+    let width = 150;
+    let health = 9001;
+
+    const objArgs = {
+      width: width,
+      height: height,
+      position: [Math.floor(game.canvasWidth / 2), game.canvasHeight - height],
+      velocity: [0, 0],
+      health: health,
+      game: game,
+      image: image
+    }
+
+    image = document.createElement("img");
+    image.src = "src/assets/player_projectile.png";
+
+    const projectileArgs = {
+      objArgs: {
+        velocity: [0, -10],
+        health: 1,
+        game: game,
+        width: 50,
+        height: 100,
+        image: image
+      },
+      origin: "player",
+      cooldown: 200,
+      xAdjustment: 2 ,
+      yAdjustment: .5
+    }
+
+    super(objArgs, projectileArgs);
+
+    this.keysPressed = {
+      up: false,
+      down: false,
+      left: false,
+      right: false,
+      shoot: false
+    }
+
+    this.disabled = false;
+    this.invincible = true;
+
+    this.projectileSound = "playerProjectile";
+  }
+
+  getHitbox() {
+    const box1 = {
+      x: this.position[0] + (this.width / 3),
+      y: this.position[1],
+      width: this.width / 3,
+      height: this.height
+    }
+
+    const box2 = {
+      x: this.position[0],
+      y: this.position[1] + (this.height * .65),
+      width: this.width,
+      height: this.height/5
+    }
+
+    return [box1, box2];
+  }
+
+  updateVelocity() {
+    const newVelocity = [0, 0];
+
+    if (this.disabled) {
+      newVelocity[1] = 2;
+    } else {
+      if (this.keysPressed.right) newVelocity[0] += PlayerShip.SPEED;
+      if (this.keysPressed.left) newVelocity[0] -= PlayerShip.SPEED;
+      if (this.keysPressed.up) newVelocity[1] -= PlayerShip.SPEED;
+      if (this.keysPressed.down) newVelocity[1] += PlayerShip.SPEED;
+    }
+
+    this.velocity = newVelocity;
+  }
+
+  move(timeDelta) {
+    this.updateVelocity();
+
+    if (this.keysPressed.shoot && !this.shootOnCooldown && !this.disabled) {
+      this.shootProjectile();
+    }
+    super.move(timeDelta);
+  }
+
+  handleKeyDown(event) {
+    event.preventDefault();
+
+    if (PlayerShip.RIGHT_KEYS.includes(event.key)) this.keysPressed.right = true;
+    else if (PlayerShip.LEFT_KEYS.includes(event.key)) this.keysPressed.left = true;
+    else if (PlayerShip.UP_KEYS.includes(event.key)) this.keysPressed.up = true;
+    else if (PlayerShip.DOWN_KEYS.includes(event.key)) this.keysPressed.down = true;
+    else if (event.key === " ") this.keysPressed.shoot = true;
+  }
+  
+  handleKeyUp(event) {
+    if (event.key === " ") event.preventDefault();
+
+    if (PlayerShip.RIGHT_KEYS.includes(event.key)) this.keysPressed.right = false;
+    else if (PlayerShip.LEFT_KEYS.includes(event.key)) this.keysPressed.left = false;
+    else if (PlayerShip.UP_KEYS.includes(event.key)) this.keysPressed.up = false;
+    else if (PlayerShip.DOWN_KEYS.includes(event.key)) this.keysPressed.down = false;
+    else if (event.key === " ") this.keysPressed.shoot = false;
+    else if (event.key === "t" && this.game.bossFight) this.finalShot();
+  }
+
+  finalShot() {
+    this.image.src = "src/assets/player2.png";
+    this.disabled = true;
+    this.game.sounds.playPowerupSound();
+    setTimeout(() => this.game.sounds.playOver9000Sound(), 1000);
+    const power = document.getElementById("over9000");
+    power.style.display = "block";
+
+    setTimeout(() => {
+      const startPosition = [this.position[0] + this.width/2, this.position[1]];
+      this.projectileArgs.objArgs.position = startPosition;
+      const projectile = new Projectile(this.projectileArgs);
+      projectile.health = 9000;
+      projectile.meme = true;
+      projectile.velocity = [0,0];
+      projectile.width = 200;
+      projectile.height = 1000;
+      projectile.position = [this.position[0]-30, this.position[1] - projectile.height];
+      this.game.allMovingObjects.projectiles.push(projectile);
+      this.game.sounds.playFinalShotSound();
+    }, 4000);
+  }
+
+  handleMouseDown(event) {
+    const parentId = event.target.parentNode.id;
+    if (!PlayerShip.IGNORE_TARGETS.includes(parentId)) this.keysPressed.shoot = true;
+  }
+
+  handleMouseUp(event) {
+    this.keysPressed.shoot = false;
+  }
+
+  bindControlHandlers() {
+    this.keyDownHandler = this.handleKeyDown.bind(this);
+    this.keyUpHandler = this.handleKeyUp.bind(this);
+    this.mouseDownHandler = this.handleMouseDown.bind(this);
+    this.mouseUpHandler = this.handleMouseUp.bind(this);
+
+    document.addEventListener("keydown", this.keyDownHandler);
+    document.addEventListener("keyup", this.keyUpHandler);
+    document.addEventListener("mousedown", this.mouseDownHandler);
+    document.addEventListener("mouseup", this.mouseUpHandler);
+  }
+
+  removeControlHandlers() {
+    document.removeEventListener("keydown", this.keyDownHandler);
+    document.removeEventListener("keyup", this.keyUpHandler);
+    document.removeEventListener("mousedown", this.mouseDownHandler);
+    document.removeEventListener("mouseup", this.mouseUpHandler);
+  }
+
+  damageTaken(damage) {
+    if (!this.invincible) {
+      super.damageTaken(damage);
+      this.game.sounds.playPlayerHurtSound();
+    }
+
+    if (this.health <= 0 && !this.disabled) {
+      this.disabled = true;
+
+      setTimeout(() => {
+        this.remove()
+        try {
+          const posX = this.position[0] - 40;
+          const posY = this.position[1] - 20;
+          const finalExplosion = new Explosion2(this.game, 100, [posX, posY]);
+          finalExplosion.dy = 0;
+          this.game.allMovingObjects.explosions.push(finalExplosion);
+          this.game.sounds.playPlayerDeathSound();
+        } catch(error) {
+          // console.error();
+          // console.log(this.game);
+        }
+        setTimeout(this.game.setGameOver.bind(this.game), 4000);
+      }, 1000)
+    }
+  }
+
+  resetInvincibility() {
+    this.invincible = false;
+  }
+
+  remove() {
+    this.game.allMovingObjects.player = null;
+  }
+}
+
+export default PlayerShip;
